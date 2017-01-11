@@ -1,0 +1,47 @@
+# {{ ansible_managed }}
+PGSQLServer {{ pureftpd_postgresql.server }}
+PGSQLPort {{ pureftpd_postgresql.port }}
+
+PGSQLUser {{ pureftpd_postgresql.username }}
+PGSQLPassword {{ pureftpd_postgresql.password }}
+PGSQLDatabase {{ pureftpd_postgresql.database }}
+
+PGSQLCrypt {{ pureftpd_postgresql.crypt }}
+PGSQLGetPW {{ pureftpd_postgresql.query_get_pw }}
+
+PGSQLGetDir {{ pureftpd_postgresql.query_get_dir }}
+
+{% if pureftpd_postgresql.query_get_uid | default('') %}
+PGSQLGetUID {{ pureftpd_postgresql.query_get_uid }}
+{% endif %}
+{% if pureftpd_postgresql.default_uid | default('') %}
+PGSQLDefaultUID {{ pureftpd_postgresql.default_uid }}
+{% endif %}
+
+{% if pureftpd_postgresql.query_get_gid | default('') %}
+PGSQLGetGID {{ pureftpd_postgresql.query_get_gid }}
+{% endif %}
+{% if pureftpd_postgresql.default_gid | default('') %}
+PGSQLDefaultGID {{ pureftpd_postgresql.default_gid }}
+{% endif %}
+
+{% if pureftpd_postgresql.query_get_qta_fs | default('') %}
+PGSQLGetQTAFS {{ pureftpd_postgresql.query_get_qta_fs }}
+{% endif %}
+{% if pureftpd_postgresql.query_get_qta_sz | default('') %}
+PGSQLGetQTASZ {{ pureftpd_postgresql.query_get_qta_sz }}
+{% endif %}
+
+{% if pureftpd_postgresql.query_get_ratio_ul | default('') %}
+PGSQLGetRatioUL {{ pureftpd_postgresql.query_get_ratio_ul }}
+{% endif %}
+{% if pureftpd_postgresql.query_get_ratio_dl | default('') %}
+PGSQLGetRatioDL {{ pureftpd_postgresql.query_get_ratio_dl }}
+{% endif %}
+
+{% if pureftpd_postgresql.query_get_bandwidth_ul | default('') %}
+PGSQLGetBandwidthUL {{ pureftpd_postgresql.query_get_bandwidth_ul }}
+{% endif %}
+{% if pureftpd_postgresql.query_get_bandwidth_dl | default('') %}
+PGSQLGetBandwidthDL {{ pureftpd_postgresql.query_get_bandwidth_dl }}
+{% endif %}

@@ -1,0 +1,63 @@
+# {{ ansible_managed }}
+{% if pureftpd_mysql.server | default('') %}
+MYSQLServer {{ pureftpd_mysql.server }}
+{% endif %}
+{% if pureftpd_mysql.port | default('') %}
+MYSQLPort {{ pureftpd_mysql.port }}
+{% endif %}
+
+{% if pureftpd_mysql.socket | default('') %}
+MYSQLSocket {{ pureftpd_mysql.socket }}
+{% endif %}
+
+MYSQLUser {{ pureftpd_mysql.username }}
+MYSQLPassword {{ pureftpd_mysql.password }}
+MYSQLDatabase {{ pureftpd_mysql.database }}
+
+MYSQLCrypt {{ pureftpd_mysql.crypt }}
+MYSQLGetPW {{ pureftpd_mysql.query_get_pw }}
+
+MYSQLGetDir {{ pureftpd_mysql.query_get_dir }}
+
+{% if pureftpd_mysql.query_get_uid | default('') %}
+MYSQLGetUID {{ pureftpd_mysql.query_get_uid }}
+{% endif %}
+{% if pureftpd_mysql.default_uid | default('') %}
+MYSQLDefaultUID {{ pureftpd_mysql.default_uid }}
+{% endif %}
+
+{% if pureftpd_mysql.query_get_gid | default('') %}
+MYSQLGetGID {{ pureftpd_mysql.query_get_gid }}
+{% endif %}
+{% if pureftpd_mysql.default_gid | default('') %}
+MYSQLDefaultGID {{ pureftpd_mysql.default_gid }}
+{% endif %}
+
+{% if pureftpd_mysql.query_get_qta_fs | default('') %}
+MySQLGetQTAFS {{ pureftpd_mysql.query_get_qta_fs }}
+{% endif %}
+{% if pureftpd_mysql.query_get_qta_sz | default('') %}
+MySQLGetQTASZ {{ pureftpd_mysql.query_get_qta_sz }}
+{% endif %}
+
+{% if pureftpd_mysql.query_get_ratio_ul | default('') %}
+MySQLGetRatioUL {{ pureftpd_mysql.query_get_ratio_ul }}
+{% endif %}
+{% if pureftpd_mysql.query_get_ratio_dl | default('') %}
+MySQLGetRatioDL {{ pureftpd_mysql.query_get_ratio_dl }}
+{% endif %}
+
+{% if pureftpd_mysql.query_get_bandwidth_ul | default('') %}
+MySQLGetBandwidthUL {{ pureftpd_mysql.query_get_bandwidth_ul }}
+{% endif %}
+{% if pureftpd_mysql.query_get_bandwidth_dl | default('') %}
+MySQLGetBandwidthDL {{ pureftpd_mysql.query_get_bandwidth_dl }}
+{% endif %}
+
+{% if pureftpd_mysql.force_tilde_expansion | default(False) %}
+MySQLForceTildeExpansion 1
+{% endif %}
+
+{% if pureftpd_mysql.transactions | default(False) %}
+MySQLTransactions On
+{% endif %}
