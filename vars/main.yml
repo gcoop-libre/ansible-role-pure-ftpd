@@ -1,0 +1,11 @@
+---
+pureftpd_global_config_file: /etc/default/pure-ftpd-common
+
+pureftpd_config_dir: /etc/pure-ftpd
+pureftpd_config_conf_dir: "{{ pureftpd_config_dir }}/conf"
+pureftpd_config_auth_dir: "{{ pureftpd_config_dir }}/auth"
+pureftpd_config_db_dir: "{{ pureftpd_config_dir }}/db"
+
+pureftpd_config_fortune_file: "{{ pureftpd_config_dir }}/pureftpd-fortune.txt"
+
+pureftpd_tls_certificate_pem: /etc/ssl/private/pure-ftpd.pem
