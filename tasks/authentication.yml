@@ -1,0 +1,95 @@
+---
+- name: Get current authentications.
+  command: ls -1 {{ pureftpd_config_auth_dir }}
+  register: pureftpd_current_auth
+  changed_when: false
+
+- name: Define empty pureftpd_authentications variable.
+  set_fact:
+    pureftpd_authentications: []
+
+- name: Enable PureDB authentication.
+  file:
+    src: "{{ pureftpd_config_conf_dir }}/PureDB"
+    dest: "{{ pureftpd_config_auth_dir }}/{{ pureftpd_auth_puredb }}pure"
+    state: link
+  when: pureftpd_auth_puredb > 0 and pureftpd_config['PureDB'] is defined
+  notify: restart Pure-FTPd
+
+- name: Add PureDB to Pure-FTPd authentications.
+  set_fact:
+    pureftpd_authentications: "{{ pureftpd_authentications }} + ['{{ pureftpd_auth_puredb }}pure']"
+  when: pureftpd_auth_puredb > 0 and pureftpd_config['PureDB'] is defined
+
+- name: Enable MySQL authentication.
+  file:
+    src: "{{ pureftpd_config_conf_dir }}/MySQLConfigFile"
+    dest: "{{ pureftpd_config_auth_dir }}/{{ pureftpd_auth_mysql }}mysql"
+    state: link
+  when: pureftpd_auth_mysql > 0 and pureftpd_config['MySQLConfigFile'] is defined
+  notify: restart Pure-FTPd
+
+- name: Add MySQL to Pure-FTPd authentications.
+  set_fact:
+    pureftpd_authentications: "{{ pureftpd_authentications }} + ['{{ pureftpd_auth_mysql }}mysql']"
+  when: pureftpd_auth_mysql > 0 and pureftpd_config['MySQLConfigFile'] is defined
+
+- name: Enable PostgreSQL authentication.
+  file:
+    src: "{{ pureftpd_config_conf_dir }}/PGSQLConfigFile"
+    dest: "{{ pureftpd_config_auth_dir }}/{{ pureftpd_auth_postgresql }}pgsql"
+    state: link
+  when: pureftpd_auth_postgresql > 0 and pureftpd_config['PGSQLConfigFile'] is defined
+  notify: restart Pure-FTPd
+
+- name: Add PostgreSQL to Pure-FTPd authentications.
+  set_fact:
+    pureftpd_authentications: "{{ pureftpd_authentications }} + ['{{ pureftpd_auth_postgresql }}pgsql']"
+  when: pureftpd_auth_postgresql > 0 and pureftpd_config['PGSQLConfigFile'] is defined
+
+- name: Enable LDAP authentication.
+  file:
+    src: "{{ pureftpd_config_conf_dir }}/LDAPConfigFile"
+    dest: "{{ pureftpd_config_auth_dir }}/{{ pureftpd_auth_ldap }}ldap"
+    state: link
+  when: pureftpd_auth_ldap > 0 and pureftpd_config['LDAPConfigFile'] is defined
+  notify: restart Pure-FTPd
+
+- name: Add LDAP to Pure-FTPd authentications.
+  set_fact:
+    pureftpd_authentications: "{{ pureftpd_authentications }} + ['{{ pureftpd_auth_ldap }}ldap']"
+  when: pureftpd_auth_ldap > 0 and pureftpd_config['LDAPConfigFile'] is defined
+
+- name: Enable PAM authentication.
+  file:
+    src: "{{ pureftpd_config_conf_dir }}/PAMAuthentication"
+    dest: "{{ pureftpd_config_auth_dir }}/{{ pureftpd_auth_pam }}pam"
+    state: link
+  when: pureftpd_auth_pam > 0 and pureftpd_config['PAMAuthentication'] is defined
+  notify: restart Pure-FTPd
+
+- name: Add PAM to Pure-FTPd authentications.
+  set_fact:
+    pureftpd_authentications: "{{ pureftpd_authentications }} + ['{{ pureftpd_auth_pam }}pam']"
+  when: pureftpd_auth_pam > 0 and pureftpd_config['PAMAuthentication'] is defined
+
+- name: Enable UNIX authentication.
+  file:
+    src: "{{ pureftpd_config_conf_dir }}/UnixAuthentication"
+    dest: "{{ pureftpd_config_auth_dir }}/{{ pureftpd_auth_unix }}unix"
+    state: link
+  when: pureftpd_auth_unix > 0 and pureftpd_config['UnixAuthentication'] is defined
+  notify: restart Pure-FTPd
+
+- name: Add UnixAuthentication to Pure-FTPd authentications.
+  set_fact:
+    pureftpd_authentications: "{{ pureftpd_authentications }} + ['{{ pureftpd_auth_unix }}unix']"
+  when: pureftpd_auth_unix > 0 and pureftpd_config['UnixAuthentication'] is defined
+
+- name: Delete old authentications.
+  file:
+    path: "{{ pureftpd_config_auth_dir }}/{{ item }}"
+    state: absent
+  when: item not in pureftpd_authentications
+  with_items: "{{ pureftpd_current_auth.stdout_lines }}"
+  notify: restart Pure-FTPd

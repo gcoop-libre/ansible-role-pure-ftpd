@@ -1,0 +1,8 @@
+---
+- name: Ensure Pure-FTPd is installed.
+  apt:
+    name: "{{ item }}"
+    state: present
+    cache_valid_time: 86400
+    update_cache: yes
+  with_items: "{{ pureftpd_packages }}"

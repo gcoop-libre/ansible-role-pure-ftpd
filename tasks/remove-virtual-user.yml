@@ -1,0 +1,11 @@
+---
+- name: "User {{ user.name }}: Verify if it exists"
+  command: pure-pw show {{ user.name }}
+  register: pureftpd_virtual_user_exists
+  changed_when: "pureftpd_virtual_user_exists.rc == 0"
+  ignore_errors: true
+
+- name: "User {{ user.name }}: Remove virtual user"
+  shell: "pure-pw userdel {{ user.name }}"
+  when: pureftpd_virtual_user_exists | success
+  notify: reload Pure-FTPd users

@@ -1,0 +1,13 @@
+---
+- name: Create MySQL configuration file.
+  template:
+    src: mysql.conf.j2
+    dest: "{{ pureftpd_config_db_dir }}/mysql.conf"
+    owner: root
+    group: root
+    mode: '0600'
+  notify: restart Pure-FTPd
+
+- name: Ensure MySQLConfigFile value
+  set_fact:
+    pureftpd_config_compiled: "{{ pureftpd_config_compiled | combine({ 'MySQLConfigFile': pureftpd_config_db_dir + '/mysql.conf' }) }}"

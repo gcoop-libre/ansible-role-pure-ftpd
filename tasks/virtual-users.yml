@@ -1,0 +1,51 @@
+---
+- name: Ensure Pure-FTPd group exists.
+  group:
+    name: "{{ pureftpd_virtual_users_group }}"
+    gid: "{{ pureftpd_virtual_users_gid | default(omit) }}"
+    system: no
+    state: present
+  when: pureftpd_virtual_users | length > 0
+
+- name: Ensure Pure-FTPd user exists.
+  user:
+    name: "{{ pureftpd_virtual_users_user }}"
+    uid: "{{ pureftpd_virtual_users_uid | default(omit) }}"
+    group: "{{ pureftpd_virtual_users_group }}"
+    home: /dev/null
+    shell: /usr/sbin/nologin
+    system: no
+    state: present
+  when: pureftpd_virtual_users | length > 0
+
+- name: Verify virtual users database existence.
+  stat:
+    path: "{{ pureftpd_config_dir }}/pureftpd.passwd"
+  register: pureftpd_virtual_users_database
+
+- name: Ensure virtual users database exists.
+  file:
+    path: "{{ pureftpd_config_dir }}/pureftpd.passwd"
+    owner: root
+    group: root
+    mode: '0600'
+    state: touch
+  when: (pureftpd_virtual_users | length > 0 or pureftpd_virtual_users_import) and not pureftpd_virtual_users_database.stat.exists | default(False)
+
+- include: create-virtual-user.yml
+  static: false
+  vars:
+    user: "{{ item }}"
+  with_items: "{{ pureftpd_virtual_users }}"
+  when: pureftpd_virtual_users | length > 0
+
+- include: remove-virtual-user.yml
+  static: false
+  vars:
+    user: "{{ item }}"
+  with_items: "{{ pureftpd_virtual_deleted_users }}"
+  when: pureftpd_virtual_deleted_users | length > 0
+
+- include: import-system-users.yml
+  static: false
+  when: pureftpd_virtual_users_import

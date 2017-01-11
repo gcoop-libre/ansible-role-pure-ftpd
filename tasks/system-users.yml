@@ -1,0 +1,14 @@
+---
+- include: create-system-user.yml
+  static: false
+  vars:
+    user: "{{ item }}"
+  with_items: "{{ pureftpd_system_users }}"
+  when: pureftpd_system_users | length > 0
+
+- include: remove-system-user.yml
+  static: false
+  vars:
+    user: "{{ item }}"
+  with_items: "{{ pureftpd_system_deleted_users }}"
+  when: pureftpd_system_deleted_users | length > 0

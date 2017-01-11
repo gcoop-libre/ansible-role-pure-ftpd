@@ -1,0 +1,16 @@
+---
+- name: List system users.
+  command: pure-pwconvert
+  register: pureftpd_system_users_to_import
+  changed_when: false
+
+- name: Import system users as virtual users.
+  lineinfile:
+    line: "{{ item }}"
+    dest: "{{ pureftpd_config_dir }}/pureftpd.passwd"
+    regexp: "^{{ item | regex_replace('([^:]+:)(.*)', '\\1') }}"
+    insertafter: EOF
+    state: present
+  with_items: "{{ pureftpd_system_users_to_import.stdout_lines }}"
+  notify: reload Pure-FTPd users
+  no_log: true

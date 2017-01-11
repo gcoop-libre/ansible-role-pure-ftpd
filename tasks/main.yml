@@ -1,0 +1,16 @@
+---
+- include: setup.yml
+- include: configure.yml
+- include: authentication.yml
+- include: system-users.yml
+- include: virtual-users.yml
+
+- include: tls-certificate.yml
+  static: false
+  when: pureftpd_config.TLS | default(0) | int() > 0
+
+- name: Ensure Pure-FTPd service is started enabled on startup.
+  service:
+    name: pure-ftpd
+    state: started
+    enabled: yes

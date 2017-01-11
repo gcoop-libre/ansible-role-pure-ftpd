@@ -1,0 +1,23 @@
+---
+- include: tls-certificate-certbot.yml
+  static: false
+  when: pureftpd_tls_certificate_method == 'certbot'
+
+- include: tls-certificate-generate.yml
+  static: false
+  when: pureftpd_tls_certificate_method == 'generate'
+
+- include: tls-certificate-upload.yml
+  static: false
+  when: pureftpd_tls_certificate_method == 'upload'
+
+- name: Verify TLS certificate exists.
+  stat:
+    path: "{{ pureftpd_tls_certificate_pem }}"
+  register: pureftpd_tls_certificate
+
+- name: Fail when no certificate is found.
+  fail:
+    msg: |
+        The certificate file was not found at {{ pureftpd_tls_certificate_pem }}
+  when: not pureftpd_tls_certificate.stat.exists | default(False)
