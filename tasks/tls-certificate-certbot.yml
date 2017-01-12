@@ -1,0 +1,29 @@
+---
+- name: Generate Pure-FTPd TLS certificate.
+  command: "{{ pureftpd_tls_certificate_certbot.command }} certonly --standalone --no-self-upgrade --keep-until-expiring --non-interactive --agree-tos --email {{ pureftpd_tls_certificate_certbot.email }} --rsa-key-size {{ pureftpd_tls_certificate_certbot.size | default(4096) }} --standalone-supported-challenges http-01 --http-01-port {{ pureftpd_tls_certificate_certbot.port | default(80) }} -d {{ pureftpd_tls_certificate_certbot.fqdn }} --post-hook 'cat /etc/letsencrypt/live/{{ pureftpd_tls_certificate_certbot.fqdn }}/privkey.pem /etc/letsencrypt/live/{{ pureftpd_tls_certificate_certbot.fqdn }}/fullchain.pem > {{ pureftpd_tls_certificate_pem }}'"
+  args:
+    creates: "{{ pureftpd_tls_certificate_pem }}"
+  when: pureftpd_tls_certificate_certbot | length > 0
+  notify: restart Pure-FTPd
+
+- name: Ensure Pure-FTPd TLS certificate permissions.
+  file:
+    path: "{{ pureftpd_tls_certificate_pem }}"
+    owner: root
+    group: root
+    mode: '0600'
+    state: file
+  when: pureftpd_tls_certificate_certbot | length > 0
+
+- name: Install cron task for Pure-FTPd TLS certificate renewal.
+  cron:
+    name: "certbot: {{ pureftpd_tls_certificate_certbot.fqdn }}"
+    cron_file: "{{ pureftpd_tls_certificate_certbote.fqdn | replace('.', '_') }}"
+    minute: '0'
+    hour: '0'
+    day: '*'
+    month: "*"
+    weekday: "*"
+    job: "{{ pureftpd_tls_certificate_certbot.command }} renew --standalone --no-self-upgrade --keep-until-expiring --non-interactive --agree-tos --email {{ pureftpd_tls_certificate_certbot.email }} --quiet --standalone-supported-challenges http-01 --http-01-port {{ pureftpd_tls_certificate_certbot.port | default(80) }} --renew-hook 'cat /etc/letsencrypt/live/{{ pureftpd_tls_certificate_certbot.fqdn }}/privkey.pem /etc/letsencrypt/live/{{ pureftpd_tls_certificate_certbot.fqdn }}/fullchain.pem > {{ pureftpd_tls_certificate_pem }} && service pure-ftpd restart'"
+    user: root
+  when: pureftpd_tls_certificate_certbot | length > 0

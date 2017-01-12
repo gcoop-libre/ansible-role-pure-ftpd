@@ -1,0 +1,13 @@
+---
+- name: Copy Pure-FTPd Fortune File content.
+  copy:
+    content: "{{ pureftpd_fortune }}"
+    dest: "{{ pureftpd_config_fortune_file }}"
+    owner: root
+    group: root
+    mode: '0600'
+  notify: restart Pure-FTPd
+
+- name: Ensure FortunesFile value
+  set_fact:
+    pureftpd_config_compiled: "{{ pureftpd_config_compiled | combine({ 'FortunesFile': pureftpd_config_fortune_file }) }}"

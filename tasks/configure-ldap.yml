@@ -1,0 +1,13 @@
+---
+- name: Create LDAP configuration file.
+  template:
+    src: ldap.conf.j2
+    dest: "{{ pureftpd_config_db_dir }}/ldap.conf"
+    owner: root
+    group: root
+    mode: '0600'
+  notify: restart Pure-FTPd
+
+- name: Ensure LDAPConfigFile value
+  set_fact:
+    pureftpd_config_compiled: "{{ pureftpd_config_compiled | combine({ 'LDAPConfigFile': pureftpd_config_db_dir + '/ldap.conf' }) }}"

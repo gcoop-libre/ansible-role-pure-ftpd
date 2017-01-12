@@ -1,0 +1,52 @@
+---
+- name: Upload Pure-FTPd global configuration file.
+  template:
+    src: pure-ftpd-common.j2
+    dest: "{{ pureftpd_global_config_file }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: restart Pure-FTPd
+
+- name: Compile Pure-FTPd configurations.
+  set_fact:
+    pureftpd_config_compiled: "{{ pureftpd_config }}"
+
+- include: configure-fortune.yml
+  static: false
+  when: pureftpd_fortune | length > 0
+
+- include: configure-mysql.yml
+  static: false
+  when: pureftpd_mysql | length > 0
+
+- include: configure-postgresql.yml
+  static: false
+  when: pureftpd_postgresql | length > 0
+
+- include: configure-ldap.yml
+  static: false
+  when: pureftpd_ldap | length > 0
+
+- name: Get current configuration.
+  command: ls -1 {{ pureftpd_config_conf_dir }}
+  register: pureftpd_current_config
+  changed_when: false
+
+- name: Delete old configuration.
+  file:
+    path: "{{ pureftpd_config_conf_dir }}/{{ item }}"
+    state: absent
+  when: pureftpd_config_compiled[item] is not defined
+  with_items: "{{ pureftpd_current_config.stdout_lines }}"
+  notify: restart Pure-FTPd
+
+- name: Write configuration.
+  template:
+    src: config.j2
+    dest: "{{ pureftpd_config_conf_dir }}/{{ item.key }}"
+    owner: root
+    group: root
+    mode: '0644'
+  with_dict: '{{ pureftpd_config_compiled }}'
+  notify: restart Pure-FTPd

@@ -1,0 +1,21 @@
+---
+- name: Copy Pure-FTPd TLS certificate.
+  copy:
+    src: "{{ pureftpd_tls_certificate_file }}"
+    dest: "{{ pureftpd_tls_certificate_pem }}"
+    owner: root
+    group: root
+    mode: '0600'
+  when: pureftpd_tls_certificate_file | length > 0
+  notify: restart Pure-FTPd
+
+- name: Copy Pure-FTPd TLS certificate content.
+  copy:
+    content: "{{ pureftpd_tls_certificate_content }}"
+    dest: "{{ pureftpd_tls_certificate_pem }}"
+    owner: root
+    group: root
+    mode: '0600'
+  when: pureftpd_tls_certificate_file | length == 0 and pureftpd_tls_certificate_content | length > 0
+  notify: restart Pure-FTPd
+  no_log: true

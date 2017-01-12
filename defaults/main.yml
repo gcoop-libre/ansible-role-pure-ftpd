@@ -1,0 +1,233 @@
+---
+pureftpd_packages:
+  - pure-ftpd-common
+  - pure-ftpd
+
+pureftpd_global_config_mode: standalone
+pureftpd_global_config_virtualchroot: 'true'
+pureftpd_global_config_uploadscript: ''
+pureftpd_global_config_uploaduid: ''
+pureftpd_global_config_uploadgid: ''
+
+pureftpd_fortune: ''
+
+pureftpd_mysql: []
+  # Available properties
+  # server: localhost
+  # port: 3306
+  # socket: /var/run/mysqld/mysqld.sock
+  # username: dbuser
+  # password: dbpass
+  # database: dbname
+  # crypt: crypt
+  # query_get_pw: SELECT Password FROM users WHERE User="\L"
+  # query_get_dir: SELECT Dir FROM users WHERE User="\L"
+  # query_get_uid: SELECT Uid FROM users WHERE User="\L"
+  # default_uid: 1000
+  # query_get_gid: SELECT Gid FROM users WHERE User="\L"
+  # default_gid: 1000
+  # query_get_qta_fs: SELECT QuotaFiles FROM users WHERE User="\L"
+  # query_get_qta_sz: SELECT QuotaSize FROM users WHERE User="\L"
+  # query_get_ratio_ul: SELECT ULRatio FROM users WHERE User="\L"
+  # query_get_ratio_dl: SELECT DLRatio FROM users WHERE User="\L"
+  # query_get_bandwidth_ul: SELECT ULBandwidth FROM users WHERE User="\L"
+  # query_get_bandwidth_dl: SELECT DLBandwidth FROM users WHERE User="\L"
+  # force_tilde_expansion: true
+  # transactions: true
+
+pureftpd_postgresql: []
+  # Available properties
+  # server: localhost
+  # port: 5432
+  # username: dbuser
+  # password: dbpass
+  # database: dbname
+  # crypt: crypt
+  # query_get_pw: SELECT "Password" FROM "users" WHERE "User"='\L'
+  # query_get_dir: SELECT "Dir" FROM "users" WHERE "User"='\L'
+  # query_get_uid: SELECT "Uid" FROM "users" WHERE "User"='\L'
+  # default_uid: 1000
+  # query_get_gid: SELECT "Gid" FROM "users" WHERE "User"='\L'
+  # default_gid: 1000
+  # query_get_qta_fs: SELECT "QuotaFiles" FROM "users" WHERE "User"='\L'
+  # query_get_qta_sz: SELECT "QuotaSize" FROM "users" WHERE "User"='\L'
+  # query_get_ratio_ul: SELECT "ULRatio" FROM "users" WHERE "User"='\L'
+  # query_get_ratio_dl: SELECT "DLRatio" FROM "users" WHERE "User"='\L'
+  # query_get_bandwidth_ul: SELECT "ULBandwidth" FROM "users" WHERE "User"='\L'
+  # query_get_bandwidth_dl: SELECT "DLBandwidth" FROM "users" WHERE "User"='\L'
+
+pureftpd_ldap: []
+  # Available properties
+  # ldaps: True
+  # tls: True
+  # server: ldap.example.com
+  # port: 389
+  # bind_dn: cn=Manager,dc=example,dc=com
+  # version: 3
+  # bind_password: bindpass
+  # base_dn: cn=Users,dc=example,dc=com
+  # filter: '&(objectClass=posixAccount)(uid=\L)'
+  # home_dir: homeDirectory
+  # default_uid: 1000
+  # force_default_uid: True
+  # default_gid: 1000
+  # force_default_gid: True
+
+pureftpd_config:
+  AllowAnonymousFXP: 'no'
+  AllowUserFXP: 'no'
+  AltLog: 'clf:/var/log/pure-ftpd/transfer.log'
+  AnonymousCanCreateDirs: 'no'
+  AnonymousCantUpload: 'yes'
+  AnonymousOnly: 'no'
+  AntiWarez: 'yes'
+  AutoRename: 'no'
+  BrokenClientsCompatibility: 'no'
+  ChrootEveryone: 'yes'
+  CreateHomeDir: 'yes'
+  CustomerProof: 'yes'
+  Daemonize: 'yes'
+  DisplayDotFiles: 'no'
+  DontResolve: 'yes'
+  FSCharset: 'UTF-8'
+  IPV4Only: 'yes'
+  KeepAllFiles: 'yes'
+  LimitRecursion: '2000 8'
+  MaxClientsNumber: '10'
+  MaxClientsPerIP: "{{ ansible_processor_cores }}"
+  MaxDiskUsage: '80'
+  MaxIdleTime: '15'
+  MaxLoad: '4'
+  MinUID: '1000'
+  NoAnonymous: 'yes'
+  NoChmod: 'yes'
+  PAMAuthentication: 'no'
+  PerUserLimits: '3 20'
+  ProhibitDotFilesRead: 'yes'
+  ProhibitDotFilesWrite: 'yes'
+  PureDB: /etc/pure-ftpd/pureftpd.pdb
+  Quota: '2000 500'
+  SyslogFacility: 'ftp'
+  TLS: '0'
+  Umask: '113 002'
+  UnixAuthentication: 'no'
+  VerboseLog: 'no'
+  # Available properties
+  # AllowAnonymousFXP: 'no'
+  # AllowUserFXP: 'no'
+  # AltLog: 'clf:/var/log/pure-ftpd/transfer.log'
+  # AnonymousBandwidth: '8'
+  # AnonymousCanCreateDirs: 'no'
+  # AnonymousCantUpload: 'yes'
+  # AnonymousOnly: 'no'
+  # AnonymousRatio: '1 10'
+  # AntiWarez: 'yes'
+  # AutoRename: 'no'
+  # Bind: '127.0.0.1,21'
+  # BrokenClientsCompatibility: 'no'
+  # CallUploadScript: 'yes'
+  # ChrootEveryone: 'yes'
+  # ClientCharset: 'UTF-8'
+  # CreateHomeDir: 'yes'
+  # CustomerProof: 'yes'
+  # Daemonize: 'yes'
+  # DisplayDotFiles: 'yes'
+  # DontResolve: 'yes'
+  # ExtAuth: /var/run/ftpd.sock
+  # ForcePassiveIP: '192.168.0.1'
+  # FortunesFile: '/etc/pure-ftpd/cookie'
+  # FSCharset: 'utf8'
+  # IPV4Only: 'yes'
+  # IPV6Only: 'yes'
+  # KeepAllFiles: 'yes'
+  # LDAPConfigFile: /etc/pureftpd-ldap.conf
+  # LimitRecursion: '10000 8'
+  # LogPID: 'yes'
+  # MaxClientsNumber: '10'
+  # MaxClientsPerIP: "{{ ansible_processor_cores }}"
+  # MaxDiskUsage: '80'
+  # MaxIdleTime: '15'
+  # MaxLoad: '4'
+  # MinUID: '1000'
+  # MySQLConfigFile: /etc/pure-ftpd/mysql.conf
+  # NoAnonymous: 'yes'
+  # NoChmod: 'yes'
+  # NoRename: 'yes'
+  # NoTruncate: 'yes'
+  # PAMAuthentication: 'no'
+  # PassivePortRange: '30000 50000'
+  # PerUserLimits: '3 20'
+  # PGSQLConfigFile: /etc/pureftpd-pgsql.conf
+  # PIDFile: '/var/run/pure-ftpd.pid'
+  # ProhibitDotFilesRead: 'yes'
+  # ProhibitDotFilesWrite: 'yes'
+  # PureDB: /etc/pure-ftpd/pureftpd.pdb
+  # Quota: '1000 10'
+  # SyslogFacility: 'ftp'
+  # TLS: '0'
+  # TLSCipherSuite: 'ALL:!aNULL:!SSLv3'
+  # TrustedIP: '10.1.1.1'
+  # Umask: '113 002'
+  # UnixAuthentication: 'no'
+  # UserBandwidth: '8'
+  # UserRatio: '1 10'
+  # VerboseLog: 'no'
+
+pureftpd_auth_puredb: 10
+pureftpd_auth_mysql: 0
+pureftpd_auth_postgresql: 0
+pureftpd_auth_ldap: 0
+pureftpd_auth_pam: 80
+pureftpd_auth_unix: 90
+
+pureftpd_system_users: []
+  # Available properties
+  # - name: user1
+  #   password: p4ssW0rd
+  #   homedir: /var/ftp/user1
+pureftpd_system_deleted_users: []
+  # Available properties
+  # - name: user2
+
+pureftpd_virtual_users_group: ftp
+pureftpd_virtual_users_user: ftp
+# pureftpd_virtual_users_gid: ''
+# pureftpd_virtual_users_uid: ''
+pureftpd_virtual_users: []
+  # Available properties
+  # - name: vuser1
+  #   password: p4ssW0rd
+  #   homedir: /var/ftp/vuser1
+  #   uid: 2000
+  #   gid: 2000
+  #   quota_files: 2000
+  #   quota_size: 500
+  #   bandwidth_ul: 5
+  #   bandwidth_dl: 5
+  #   ratio_ul: 10
+  #   ratio_dl: 1
+pureftpd_virtual_deleted_users: []
+  # Available properties
+  # - name: vuser2
+pureftpd_virtual_users_import: false
+
+pureftpd_tls_certificate_method: ''
+pureftpd_tls_certificate_certbot: []
+  # Available properties
+  # command: /opt/certbot/certbot-auto
+  # fqdn: ftp.example.com
+  # email: letsencrypt@example.com
+  # size: 4096
+  # port: 80
+pureftpd_tls_certificate_openssl: []
+  # Available properties
+  # size: 4096
+  # days: 365
+  # fqdn: ftp.example.com
+  # country: ''
+  # state: ''
+  # locality: ''
+  # organization: ''
+  # unit: ''
+pureftpd_tls_certificate_file: ''
+pureftpd_tls_certificate_content: ''

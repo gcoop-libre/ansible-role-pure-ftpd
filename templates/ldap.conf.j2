@@ -1,0 +1,43 @@
+# {{ ansible_managed }}
+{% if pureftpd_ldap.ldaps | default(False) %}
+LDAPScheme ldaps
+{% else %}
+LDAPScheme ldap
+{% if pureftpd_ldap.tls | default(False) %}
+LDAPUseTLS True
+{% endif %}
+{% endif %}
+LDAPServer {{ pureftpd_ldap.server }}
+LDAPPort {{ pureftpd_ldap.port }}
+
+LDAPBindDN {{ pureftpd_ldap.bind_dn }}
+{% if pureftpd_ldap.version | default('') %}
+LDAPVersion {{ pureftpd_ldap.version }}
+{% endif %}
+LDAPBindPW {{ pureftpd_ldap.bind_password }}
+LDAPBaseDN {{ pureftpd_ldap.base_dn }}
+{% if pureftpd_ldap.filter | default('') %}
+LDAPFilter {{ pureftpd_ldap.filter }}
+{% endif %}
+
+{% if pureftpd_ldap.home_dir | default('') %}
+LDAPHomeDir {{ pureftpd_ldap.home_dir }}
+{% endif %}
+
+{% if pureftpd_ldap.default_uid | default('') %}
+LDAPDefaultUID {{ pureftpd_ldap.default_uid }}
+{% endif %}
+{% if pureftpd_ldap.force_default_uid | default(False) %}
+LDAPForceDefaultUID True
+{% else %}
+LDAPForceDefaultUID False
+{% endif %}
+
+{% if pureftpd_ldap.default_gid | default('') %}
+LDAPDefaultGID {{ pureftpd_ldap.default_gid }}
+{% endif %}
+{% if pureftpd_ldap.force_default_gid | default(False) %}
+LDAPForceDefaultGID True
+{% else %}
+LDAPForceDefaultGID False
+{% endif %}
