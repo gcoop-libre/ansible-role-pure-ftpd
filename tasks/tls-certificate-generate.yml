@@ -1,6 +1,6 @@
 ---
 - name: Generate Pure-FTPd TLS certificate.
-  command: openssl req -x509 -nodes -newkey rsa:{{ pureftpd_tls_certificate_openssl.size | default(4096) }} -days {{ pureftpd_tls_certificate_openssl.days | default(365) }} -keyout {{ pureftpd_tls_certificate_pem }} -out {{ pureftpd_tls_certificate_pem }} -subj "/C={{ pureftpd_tls_certificate_openssl.country | default('') }}/ST={{ pureftpd_tls_certificate_openssl.state | default('') }}/L={{ pureftpd_tls_certificate_openssl.locality | default('') }}/O={{ pureftpd_tls_certificate_openssl.organization | default('') }}/OU={{ pureftpd_tls_certificate_openssl.unit | default('') }}/CN={{ pureftpd_tls_certificate_openssl.fqdn }}"
+  command: openssl req -x509 -nodes -newkey rsa:{{ pureftpd_tls_certificate_openssl.size | default(4096) }} -sha256 -days {{ pureftpd_tls_certificate_openssl.days | default(365) }} -keyout {{ pureftpd_tls_certificate_pem }} -out {{ pureftpd_tls_certificate_pem }} -subj "/C={{ pureftpd_tls_certificate_openssl.country | default('') }}/ST={{ pureftpd_tls_certificate_openssl.state | default('') }}/L={{ pureftpd_tls_certificate_openssl.locality | default('') }}/O={{ pureftpd_tls_certificate_openssl.organization | default('') }}/OU={{ pureftpd_tls_certificate_openssl.unit | default('') }}/CN={{ pureftpd_tls_certificate_openssl.fqdn }}"
   args:
     creates: "{{ pureftpd_tls_certificate_pem }}"
   when: pureftpd_tls_certificate_openssl | length > 0
