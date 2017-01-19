@@ -14,12 +14,12 @@
   ignore_errors: true
 
 - name: "User {{ user.name }}: Create virtual user"
-  shell: "(echo {{ user.password }}; echo {{ user.password }}) | pure-pw useradd {{ user.name }} -u {{ user.uid | default(pureftpd_virtual_users_user) }} -g {{ user.gid | default(pureftpd_virtual_users_group) }} -d {{ user.homedir }} -n {{ user.quota_files | default('\'\'') }} -N {{ user.quota_size | default('\'\'') }} -t {{ user.bandwidth_dl | default('\'\'') }} -T {{ user.bandwidth_ul | default('\'\'') }} -q {{ user.ratio_ul | default('\'\'') }} -Q {{ user.ratio_dl | default('\'\'') }}"
+  shell: "(echo {{ user.password }}; echo {{ user.password }}) | pure-pw useradd {{ user.name }} -u {{ user.uid | default(pureftpd_virtual_users_user) }} -g {{ user.gid | default(pureftpd_virtual_users_group) }} -d {{ user.homedir }} -n {{ user.quota_files | default('\"\"') }} -N {{ user.quota_size | default('\"\"') }} -t {{ user.bandwidth_dl | default('\"\"') }} -T {{ user.bandwidth_ul | default('\"\"') }} -q {{ user.ratio_ul | default('\"\"') }} -Q {{ user.ratio_dl | default('\"\"') }}"
   when: pureftpd_virtual_user_exists | failed
   notify: reload Pure-FTPd users
 
 - name: "User {{ user.name }}: Update virtual user"
-  command: "pure-pw usermod {{ user.name }} -u {{ user.uid | default(pureftpd_virtual_users_user) }} -g {{ user.gid | default(pureftpd_virtual_users_group) }} -d {{ user.homedir }} -n {{ user.quota_files | default('\'\'') }} -N {{ user.quota_size | default('\'\'') }} -t {{ user.bandwidth_dl | default('\'\'') }} -T {{ user.bandwidth_ul | default('\'\'') }} -q {{ user.ratio_ul | default('\'\'') }} -Q {{ user.ratio_dl | default('\'\'') }}"
+  command: "pure-pw usermod {{ user.name }} -u {{ user.uid | default(pureftpd_virtual_users_user) }} -g {{ user.gid | default(pureftpd_virtual_users_group) }} -d {{ user.homedir }} -n {{ user.quota_files | default('\"\"') }} -N {{ user.quota_size | default('\"\"') }} -t {{ user.bandwidth_dl | default('\"\"') }} -T {{ user.bandwidth_ul | default('\"\"') }} -q {{ user.ratio_ul | default('\"\"') }} -Q {{ user.ratio_dl | default('\"\"') }}"
   when: pureftpd_virtual_user_exists | success
   notify: reload Pure-FTPd users
 
