@@ -18,7 +18,7 @@
 - name: Install cron task for Pure-FTPd TLS certificate renewal.
   cron:
     name: "certbot: {{ pureftpd_tls_certificate_certbot.fqdn }}"
-    cron_file: "{{ pureftpd_tls_certificate_certbote.fqdn | replace('.', '_') }}"
+    cron_file: "{{ pureftpd_tls_certificate_certbot.fqdn | replace('.', '_') }}"
     minute: '0'
     hour: '0'
     day: '*'
