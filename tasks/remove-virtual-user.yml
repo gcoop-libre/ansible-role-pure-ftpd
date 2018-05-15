@@ -7,5 +7,5 @@
 
 - name: "User {{ user.name }}: Remove virtual user"
   shell: "pure-pw userdel {{ user.name }}"
-  when: pureftpd_virtual_user_exists | success
+  when: pureftpd_virtual_user_exists is success
   notify: reload Pure-FTPd users
