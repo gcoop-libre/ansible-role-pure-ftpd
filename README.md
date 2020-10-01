@@ -183,10 +183,10 @@ These properties set the priority of the different authentication methods. Only 
 
     pureftpd_system_users:
       - name: user1
-        password: p4ssW0rd
+        password: <encrypted password>
         homedir: /var/ftp/user1
 
-List of users that should be present on the system.
+List of users that should be present on the system. The password of a system user should be encrypted. See the Ansible docs on [how to generate encrypted passwords](https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#how-do-i-generate-encrypted-passwords-for-the-user-module).
 
     pureftpd_system_deleted_users:
       - name: user2
