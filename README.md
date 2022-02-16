@@ -6,7 +6,7 @@ An Ansible Role that installs Pure-FTPd on Debian/Ubuntu.
 Requirements
 ------------
 
-This role only have requirements if the TLS support will be enabled and you need to generate the certificate.
+This role only has requirements if the TLS support will be enabled and you need to generate the certificate.
 
 If the value of `pureftpd_tls_certificate_method` is `generate`, `openssl` needs to be installed on the server.
 
@@ -33,7 +33,7 @@ Properties for the global configuration of Pure-FTPd. They are used to generate 
 
     pureftpd_fortune: ''
 
-Message to show on users login.
+Message to show on user's login.
 
     pureftpd_mysql:
       server: localhost
@@ -58,7 +58,7 @@ Message to show on users login.
       force_tilde_expansion: true
       transactions: true
 
-This property set the configuration needed for the storage of virtual users on a MySQL server. There is more information of this configurations on [Pure-FTPd documentation](https://download.pureftpd.org/pub/pure-ftpd/doc/README.MySQL).
+This property sets the configuration needed for the storage of virtual users on a MySQL server. There is more information about these configurations on [Pure-FTPd documentation](https://download.pureftpd.org/pub/pure-ftpd/doc/README.MySQL).
 
     pureftpd_postgresql:
       server: localhost
@@ -80,7 +80,7 @@ This property set the configuration needed for the storage of virtual users on a
       query_get_bandwidth_ul: SELECT "ULBandwidth" FROM "users" WHERE "User"='\L'
       query_get_bandwidth_dl: SELECT "DLBandwidth" FROM "users" WHERE "User"='\L'
 
-This property set the configuration needed for the storage of virtual users on a PostgreSQL server. There is more information of this configurations on [Pure-FTPd documentation](https://download.pureftpd.org/pub/pure-ftpd/doc/README.PGSQL).
+This property sets the configuration needed for the storage of virtual users on a PostgreSQL server. There is more information about these configurations on [Pure-FTPd documentation](https://download.pureftpd.org/pub/pure-ftpd/doc/README.PGSQL).
 
     pureftpd_ldap:
       ldaps: True
@@ -98,7 +98,7 @@ This property set the configuration needed for the storage of virtual users on a
       default_gid: 1000
       force_default_gid: True
 
-This property set the configuration needed for the storage of virtual users on an LDAP server. There is more information of this configurations on [Pure-FTPd documentation](https://download.pureftpd.org/pub/pure-ftpd/doc/README.LDAP).
+This property sets the configuration needed for the storage of virtual users on an LDAP server. There is more information about these configurations on [Pure-FTPd documentation](https://download.pureftpd.org/pub/pure-ftpd/doc/README.LDAP).
 
     pureftpd_config:
       AllowAnonymousFXP: 'no'
@@ -161,9 +161,9 @@ This property set the configuration needed for the storage of virtual users on a
       UserRatio: '1 10'
       VerboseLog: 'no'
 
-List of configuration options for Pure-FTPd. There is more information of this configurations on [Pure-FTPd documentation](https://download.pureftpd.org/pub/pure-ftpd/doc/README).
+List of configuration options for Pure-FTPd. There is more information about these configurations on [Pure-FTPd documentation](https://download.pureftpd.org/pub/pure-ftpd/doc/README).
 
-The `TLS` option has four posible values (From `0` to `3`). This values implies:
+The `TLS` option has four possible values (from `0` to `3`). This value implies:
 
 * `0`: support for SSL/TLS is disabled.
 * `1`: clients can connect either the traditional way or through an SSL/TLS layer.
@@ -179,14 +179,14 @@ There is more information available at [Pure-FTPd documentation](http://download
     pureftpd_auth_pam: 80
     pureftpd_auth_unix: 90
 
-These properties set the prority of the different authentication methods. Only those with a value greater than `0` will be enabled.
+These properties set the priority of the different authentication methods. Only those with a value greater than `0` will be enabled.
 
     pureftpd_system_users:
       - name: user1
-        password: p4ssW0rd
+        password: <encrypted password>
         homedir: /var/ftp/user1
 
-List of users that should be present on the system.
+List of users that should be present on the system. The password of a system user should be encrypted. See the Ansible docs on [how to generate encrypted passwords](https://docs.ansible.com/ansible/latest/reference_appendices/faq.html#how-do-i-generate-encrypted-passwords-for-the-user-module).
 
     pureftpd_system_deleted_users:
       - name: user2
@@ -196,12 +196,12 @@ List of users that should not be present on the system. These is useful to delet
     pureftpd_virtual_users_user: ftp
     pureftpd_virtual_users_group: ftp
 
-If Pure-FTPd server will use virtual users, it need at least a system user and his corresponding group.
+If the Pure-FTPd server will use virtual users, it needs at least a system user and his corresponding group.
 
     pureftpd_virtual_users_gid: ''
     pureftpd_virtual_users_uid: ''
 
-This properties force an UID and GID for them. They are not defined by default.
+These properties force a UID and GID for them. They are not defined by default.
 
     pureftpd_virtual_users:
       - name: vuser1
@@ -221,7 +221,7 @@ List of virtual users to create using PureDB as storage method. `name`, `passwor
     pureftpd_virtual_deleted_users:
       - name: vuser2
 
-List of users that should not be present on the PureDB database. These is useful to delete old FTP accounts.
+List of users that should not be present on the PureDB database. This is useful to delete old FTP accounts.
 
     pureftpd_virtual_users_import: false
 
@@ -244,7 +244,7 @@ This property has three valid values:
       size: 4096
       port: 80
 
-When using `certbot`, this dictionary set the `path` for certbot command and a few options needed for certificate request. You need to set the FQDN for the certificate and the email for the Let's Encrypt account. You may change the certificate's key size and the port where `certbot` will wait for Let's Encrypt challenge.
+When using `certbot`, this dictionary set the `path` for certbot command and a few options needed for the certificate request. You need to set the FQDN for the certificate and the email for the Let's Encrypt account. You may change the certificate's key size and the port where `certbot` will wait for Let's Encrypt challenge.
 
     pureftpd_tls_certificate_openssl:
       size: 4096
